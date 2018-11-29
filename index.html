@@ -12,23 +12,22 @@
   <body>
     <script>
       window.fbAsyncInit = function() {
-        FB.init({
-          appId      : 'YOURAPPID',
-          cookie     : true,
-          xfbml      : true,
-          version    : 'v2.8'
-        });
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
-      };
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
+    FB.init({
+      appId      : '2121840991206007',
+      xfbml      : true,
+      version    : 'v3.2'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
        function statusChangeCallback(response){
          if(response.status === 'connected'){
            console.log('Logged in and authenticated');
@@ -39,17 +38,20 @@
            setElements(false);
          }
        }
+
       function checkLoginState() {
         FB.getLoginStatus(function(response) {
           statusChangeCallback(response);
         });
       }
+
       function testAPI(){
         FB.api('/me?fields=name,email,birthday,location', function(response){
           if(response && !response.error){
             //console.log(response);
             buildProfile(response);
           }
+
           FB.api('/me/feed', function(response){
             if(response && !response.error){
               buildFeed(response);
@@ -57,6 +59,7 @@
           });
         })
       }
+
       function buildProfile(user){
         let profile = `
           <h3>${user.name}</h3>
@@ -67,8 +70,10 @@
             <li class="list-group-item">User ID: ${user.location.name}</li>
           </ul>
         `;
+
         document.getElementById('profile').innerHTML = profile;
       }
+
       function buildFeed(feed){
         let output = '<h3>Latest Posts</h3>';
         for(let i in feed.data){
@@ -80,8 +85,10 @@
             `;
           }
         }
+
         document.getElementById('feed').innerHTML = output;
       }
+
       function setElements(isLoggedIn){
         if(isLoggedIn){
           document.getElementById('logout').style.display = 'block';
@@ -97,6 +104,7 @@
           document.getElementById('heading').style.display = 'block';
         }
       }
+
       function logout(){
         FB.logout(function(response){
           setElements(false);
